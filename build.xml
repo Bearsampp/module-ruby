@@ -61,6 +61,8 @@
     <mkdir dir="${bundle.tmp.prep.path}/${bundle.folder}"/>
     <copy todir="${bundle.tmp.prep.path}/${bundle.folder}" overwrite="true">
       <fileset dir="${bundle.srcdest}"/>
+    </copy>
+    <copy todir="${bundle.tmp.prep.path}/${bundle.folder}" overwrite="true">
       <fileset dir="${bundle.path}" defaultexcludes="yes"/>
     </copy>
   </target>
