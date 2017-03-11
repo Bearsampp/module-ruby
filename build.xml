@@ -63,7 +63,9 @@
       <fileset dir="${bundle.srcdest}"/>
     </copy>
     <copy todir="${bundle.tmp.prep.path}/${bundle.folder}" overwrite="true">
-      <fileset dir="${bundle.path}" defaultexcludes="yes"/>
+      <fileset dir="${bundle.path}" defaultexcludes="yes" excludes="
+        rubygems/**"
+      />
     </copy>
   </target>
   
