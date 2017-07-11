@@ -1,5 +1,10 @@
 # Changelog
 
+## r3 (2017/07/11)
+
+* New bundles : 2.4.1.2.p111 (Issue crazy-max/neard#284)
+* Include [RubyGems](https://rubygems.org) 2.6.12
+
 ## r2 (2017/03/06)
 
 * New bundles : 2.2.6.p396, 2.3.3.p222 (Issue crazy-max/neard#227)
