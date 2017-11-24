@@ -6,12 +6,12 @@
 
 ## r3 (2017/07/11)
 
-* New release : 2.4.1.2.p111 (Issue crazy-max/neard#284)
+* New release : 2.4.1.2.p111 (Issue neard/neard#284)
 * Include [RubyGems](https://rubygems.org) 2.6.12
 
 ## r2 (2017/03/06)
 
-* New releases : 2.2.6.p396, 2.3.3.p222 (Issue crazy-max/neard#227)
+* New releases : 2.2.6.p396, 2.3.3.p222 (Issue neard/neard#227)
 * Include [RubyGems](https://rubygems.org) 2.6.10
 
 ## r1 (2016/11/10)
