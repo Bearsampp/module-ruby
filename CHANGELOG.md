@@ -1,5 +1,9 @@
 # Changelog
 
+## r5 (2018/10/06)
+
+* New releases : 2.4.4-2, 2.5.1-2 (Issue neard/neard#392)
+
 ## r4 (2017/08/31)
 
 * Fix strbvars path on release 2.4.1.2.p111
