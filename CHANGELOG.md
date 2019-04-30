@@ -1,5 +1,9 @@
 # Changelog
 
+## r6 (2019/05/01)
+
+* New release : 2.6.3-1 (Issue neard/neard#409)
+
 ## r5 (2018/10/06)
 
 * New releases : 2.4.4-2, 2.5.1-2 (Issue neard/neard#392)
