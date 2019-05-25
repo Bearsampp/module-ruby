@@ -5,7 +5,7 @@ This is a module of [Neard project](https://github.com/neard/neard) involving Ru
 
 ## Documentation and downloads
 
-http://neard.io/modules/ruby
+https://neard.io/modules/ruby
 
 ## Issues
 
