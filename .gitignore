@@ -1,5 +1,11 @@
 # Jetbrains
 /*.iml
+.idea/
 
 # Neard
 /.dev
+
+# Visual Studio
+.vscode/
+.vs/
+.vsc/
