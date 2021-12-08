@@ -23,6 +23,9 @@
     <getmoduleuntouched name="${bundle.name}" version="${bundle.version}" propSrcDest="bundle.srcdest" propSrcFilename="bundle.srcfilename"/>
     <assertfile file="${bundle.srcdest}/bin/ruby.exe"/>
 
+    <echo message="======= Bundle.srcdest: $(bundle.srcdest) ==========" />
+
+
     <!-- Temp copy -->
     <copy todir="${bundle.srcdest}" overwrite="true">
       <fileset dir="${bundle.path}" defaultexcludes="yes"/>
