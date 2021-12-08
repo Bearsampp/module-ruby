@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="module-ruby" basedir=".">
+<project name = "module-ruby" basedir = ".">
 
-  <dirname property="project.basedir" file="${ant.file.module-ruby}"/>
-  <property name="root.dir" location="${project.basedir}/.."/>
-  <property name="build.properties" value="${project.basedir}/build.properties"/>
-  <property file="${build.properties}"/>
+    <dirname property = "project.basedir" file = "${ant.file.module-ruby}" />
+    <property name = "root.dir" location = "${project.basedir}/.." />
+    <property name = "build.properties" value = "${project.basedir}/build.properties" />
+    <property file = "${build.properties}" />
 
-  <!-- Bearsampp dev -->
-  <property name="dev.path" location="${root.dir}/dev"/>
-  <fail unless="dev.path" message="Project 'dev' not found in ${dev.path}"/>
-  <echo message="Bearsampp dev found in ${dev.path}" level="debug"/>
+    <!-- Bearsampp dev -->
+    <property name = "dev.path" location = "${root.dir}/dev" />
+    <fail unless = "dev.path" message = "Project 'dev' not found in ${dev.path}" />
+    <echo message = "Bearsampp dev found in ${dev.path}" level = "debug" />
 
-  <!-- Import build-commons.xml -->
-  <import file="${dev.path}/build/build-commons.xml"/>
-  <!-- Import build-bundle.xml -->
-  <import file="${dev.path}/build/build-bundle.xml"/>
+    <!-- Import build-commons.xml -->
+    <import file = "${dev.path}/build/build-commons.xml" />
+    <!-- Import build-bundle.xml -->
+    <import file = "${dev.path}/build/build-bundle.xml" />
 
-  <target name="release.build">
-    <basename property="bundle.folder" file="${bundle.path}"/>
-    <replaceproperty src="bundle.folder" dest="bundle.version" replace="${bundle.name}" with=""/>
+    <target name = "release.build">
+        <basename property = "bundle.folder" file = "${bundle.path}" />
+        <replaceproperty src = "bundle.folder" dest = "bundle.version" replace = "${bundle.name}" with = "" />
 
-    <getmoduleuntouched name="${bundle.name}" version="${bundle.version}" propSrcDest="bundle.srcdest" propSrcFilename="bundle.srcfilename"/>
-    <assertfile file="${bundle.srcdest}/bin/ruby.exe"/>
+        <getmoduleuntouched name = "${bundle.name}" version = "${bundle.version}" propSrcDest = "bundle.srcdest" propSrcFilename = "bundle.srcfilename" />
+        <assertfile file = "${bundle.srcdest}/bin/ruby.exe" />
 
-    <echo message="======= Bundle.srcdest: $(bundle.srcdest) ==========" />
+        <echo message = "======= Bundle.srcdest: $(bundle.srcdest) ==========" />
 
 
-    <!-- Temp copy -->
-    <copy todir="${bundle.srcdest}" overwrite="true">
-      <fileset dir="${bundle.path}" defaultexcludes="yes"/>
-    </copy>
+        <!-- Temp copy -->
+        <copy todir = "${bundle.srcdest}" overwrite = "true">
+            <fileset dir = "${bundle.path}" defaultexcludes = "yes" />
+        </copy>
 
-    <!-- Download RubyGems -->
-    <echo message="Download RubyGems"/>
-    <property name="rubygems.path" location="${bundle.srcdest}/rubygems"/>
-    <property file="${rubygems.path}/rubygems.properties"/>
-    <mkdir dir="${rubygems.path}"/>
-    <get dest="${rubygems.path}/rubygems-update.gem" src="${rubygems}" skipexisting="true"/>
+        <!-- Download RubyGems -->
+        <echo message = "Download RubyGems" />
+        <property name = "rubygems.path" location = "${bundle.srcdest}/rubygems" />
+        <property file = "${rubygems.path}/rubygems.properties" />
+        <mkdir dir = "${rubygems.path}" />
+        <get dest = "${rubygems.path}/rubygems-update.gem" src = "${rubygems}" skipexisting = "true" />
 
-    <!-- Install RubyGems -->
-    <echo message="Install RubyGems"/>
-    <exec executable="${rubygems.path}/install.bat" dir="${rubygems.path}" failonerror="true"/>
-    <delete dir="${rubygems.path}"/>
-    <assertfile file="${bundle.srcdest}/bin/update_rubygems.bat"/>
+        <!-- Install RubyGems -->
+        <echo message = "Install RubyGems" />
+        <exec executable = "${rubygems.path}/install.bat" dir = "${rubygems.path}" failonerror = "true" />
+        <delete dir = "${rubygems.path}" />
+        <assertfile file = "${bundle.srcdest}/bin/update_rubygems.bat" />
 
-    <!-- Update RubyGems -->
-    <echo message="Update RubyGems"/>
-    <exec executable="${bundle.srcdest}/bin/update_rubygems.bat" dir="${bundle.srcdest}/bin" failonerror="true"/>
+        <!-- Update RubyGems -->
+        <echo message = "Update RubyGems" />
+        <exec executable = "${bundle.srcdest}/bin/update_rubygems.bat" dir = "${bundle.srcdest}/bin" failonerror = "true" />
 
-    <!-- Check RubyGems version -->
-    <echo message="Check RubyGems version"/>
-    <exec executable="${bundle.srcdest}/bin/gem.bat" dir="${bundle.srcdest}/bin" failonerror="true">
-      <arg value="--version"/>
-    </exec>
+        <!-- Check RubyGems version -->
+        <echo message = "Check RubyGems version" />
+        <exec executable = "${bundle.srcdest}/bin/gem.bat" dir = "${bundle.srcdest}/bin" failonerror = "true">
+            <arg value = "--version" />
+        </exec>
 
-    <!-- Update paths -->
-    <echo message="Update paths"/>
-    <replace dir="${bundle.srcdest}/bin" token="${bundle.srcdest}" value="~Bearsampp_LIN_PATH~/tools/ruby/ruby${bundle.version}">
-      <exclude name="*.dll,*.exe"/>
-    </replace>
+        <!-- Update paths -->
+        <echo message = "Update paths" />
+        <replace dir = "${bundle.srcdest}/bin" token = "${bundle.srcdest}" value = "~Bearsampp_LIN_PATH~/tools/ruby/ruby${bundle.version}">
+            <exclude name = "*.dll,*.exe" />
+        </replace>
 
-    <delete dir="${bundle.tmp.prep.path}/${bundle.folder}"/>
-    <mkdir dir="${bundle.tmp.prep.path}/${bundle.folder}"/>
-    <copy todir="${bundle.tmp.prep.path}/${bundle.folder}" overwrite="true">
-      <fileset dir="${bundle.srcdest}"/>
-    </copy>
-    <copy todir="${bundle.tmp.prep.path}/${bundle.folder}" overwrite="true">
-      <fileset dir="${bundle.path}" defaultexcludes="yes" excludes="
+        <delete dir = "${bundle.tmp.prep.path}/${bundle.folder}" />
+        <mkdir dir = "${bundle.tmp.prep.path}/${bundle.folder}" />
+        <copy todir = "${bundle.tmp.prep.path}/${bundle.folder}" overwrite = "true">
+            <fileset dir = "${bundle.srcdest}" />
+        </copy>
+        <copy todir = "${bundle.tmp.prep.path}/${bundle.folder}" overwrite = "true">
+            <fileset dir = "${bundle.path}" defaultexcludes = "yes" excludes = "
         rubygems/**"
-      />
-    </copy>
-  </target>
+            />
+        </copy>
+    </target>
 
 </project>
