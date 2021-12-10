@@ -21,10 +21,20 @@
         <replaceproperty src = "bundle.folder" dest = "bundle.version" replace = "${bundle.name}" with = "" />
 
         <getmoduleuntouched name = "${bundle.name}" version = "${bundle.version}" propSrcDest = "bundle.srcdest" propSrcFilename = "bundle.srcfilename" />
+
+        <echo message = "=======" />
+        <echo message = "Bundle.srcdest: ${bundle.srcdest}" />
+        <echo message = "Bundle.name: ${bundle.name}" />
+        <echo message = "Bundle.version: ${bundle.version}" />
+        <echo message = "Bundle.folder: ${bundle.folder}" />
+        <echo message = "Bundle.path: ${bundle.path}" />
+        <echo message = "Bundle.srcfilename: ${bundle.srcfilename}" />
+        <echo message = "Input.Bundle: ${input.bundle}" />
+        <echo message = "Bundle.filename: ${bundle.filename}" />
+        <echo message="idk: ${project.basedir}/bin/${bundle.name}${input.bundle}" />
+        <echo message = "=======" />
+
         <assertfile file = "${bundle.srcdest}/bin/ruby.exe" />
-
-        <echo message = "======= Bundle.srcdest: $(bundle.srcdest) ==========" />
-
 
         <!-- Temp copy -->
         <copy todir = "${bundle.srcdest}" overwrite = "true">
