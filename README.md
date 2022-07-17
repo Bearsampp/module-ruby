@@ -5,7 +5,7 @@ This is a module of [Bearsampp project](https://github.com/Bearsampp/Bearsampp) 
 
 ## Documentation and downloads
 
-https://Bearsampp.github.io/modules/ruby
+https://bearsampp.com/module/ruby
 
 ## Issues
 
