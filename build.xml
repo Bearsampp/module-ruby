@@ -66,7 +66,7 @@
 
         <!-- Update paths -->
         <echo message = "Update paths" />
-        <replace dir = "${bundle.srcdest}/bin" token = "${bundle.srcdest}" value = "~Bearsampp_LIN_PATH~/tools/ruby/ruby${bundle.version}">
+        <replace dir = "${bundle.srcdest}/bin" token = "${bundle.srcdest}" value = "~BEARSAMPP_LIN_PATH~/tools/ruby/ruby${bundle.version}">
             <exclude name = "*.dll,*.exe" />
         </replace>
 
