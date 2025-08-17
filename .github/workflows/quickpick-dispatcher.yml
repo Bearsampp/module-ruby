@@ -6,20 +6,27 @@ on:
             - closed
         branches:
             - 'main'
+    release:
+        types:
+            - created
+            - edited
+            - prereleased
     workflow_dispatch:
 
 jobs:
-    if_merged:
-        if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    dispatch_workflow:
+        if: |
+            (github.event_name == 'workflow_dispatch') ||
+            (github.event_name == 'pull_request' && github.event.pull_request.merged == true) ||
+            (github.event_name == 'release' && (github.event.action == 'created' || github.event.action == 'edited' || github.event.action == 'prereleased'))
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-
             - name: Invoke workflow in another repo with inputs
-              uses: benc-uk/workflow-dispatch@v1.2.4
+              uses: peter-evans/repository-dispatch@v2
               with:
-                  workflow: combine_releases.yml
-                  repo: Bearsampp/Bearsampp
-                  # Required when using the `repo` option. Either a PAT or a token generated from the GitHub app or CLI
-                  token: "${{ secrets.GH_PAT }}"
+                  token: ${{ secrets.GH_PAT }}
+                  repository: Bearsampp/Bearsampp
+                  event-type: module_release_created
+                  client-payload: '{"workflow": "combine_releases.yml"}'
