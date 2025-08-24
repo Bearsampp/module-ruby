@@ -22,18 +22,21 @@
 
         <getmoduleuntouched name="${bundle.name}" version="${bundle.version}" propSrcDest="bundle.srcdest" propSrcFilename="bundle.srcfilename" />
 
-        <!-- Check if ruby.exe exists in the rubyinstaller-x64 directory -->
-        <available file="${bundle.srcdest}/rubyinstaller-${bundle.version}-x64/bin/ruby.exe" property="rubyinstaller.exists" />
+        <!-- Extract directory name from bundle.srcfilename by removing file extension -->
+        <basename property="rubyinstaller.dirname" file="${bundle.srcfilename}" suffix=".7z" />
+
+        <!-- Check if ruby.exe exists in the rubyinstaller directory -->
+        <available file="${bundle.srcdest}/${rubyinstaller.dirname}/bin/ruby.exe" property="rubyinstaller.exists" />
 
         <!-- Move files if ruby.exe exists -->
         <if>
             <isset property="rubyinstaller.exists" />
             <then>
-                <echo message="Moving files from rubyinstaller-${bundle.version}-x64 to ${bundle.srcdest}" />
+                <echo message="Moving files from ${rubyinstaller.dirname} to ${bundle.srcdest}" />
                 <move todir="${bundle.srcdest}">
-                    <fileset dir="${bundle.srcdest}/rubyinstaller-${bundle.version}-x64" />
+                    <fileset dir="${bundle.srcdest}/${rubyinstaller.dirname}" />
                 </move>
-                <delete dir="${bundle.srcdest}/rubyinstaller-${bundle.version}-x64" />
+                <delete dir="${bundle.srcdest}/${rubyinstaller.dirname}" />
             </then>
         </if>
 
