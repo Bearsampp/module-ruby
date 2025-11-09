@@ -15,3 +15,8 @@
 
 # Qodo
 /.qodo
+
+# Gradle Cache
+.gradle/
+build/
+.gradle-cache/
