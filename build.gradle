@@ -503,6 +503,23 @@ def downloadFile(String url, File destDir) {
 }
 
 // Helper methods for version discovery and selection
+
+// Helper for semantic version comparison
+def versionComparator = { a, b ->
+    def aParts = a.tokenize('.').collect { it.isInteger() ? it.toInteger() : it }
+    def bParts = b.tokenize('.').collect { it.isInteger() ? it.toInteger() : it }
+    for (int i = 0; i < Math.max(aParts.size(), bParts.size()); i++) {
+        def aVal = i < aParts.size() ? aParts[i] : 0
+        def bVal = i < bParts.size() ? bParts[i] : 0
+        if (aVal.getClass() != bVal.getClass()) {
+            aVal = aVal.toString()
+            bVal = bVal.toString()
+        }
+        if (aVal != bVal) return aVal <=> bVal
+    }
+    return 0
+}
+
 def findAvailableVersions = {
     def binDir = new File(projectDir, 'bin')
     def archivedDir = new File(projectDir, 'bin/archived')
@@ -524,23 +541,14 @@ def findAvailableVersions = {
         )
     }
 
-    return versions.unique()
+    // Remove duplicates and sort semantically
+    return versions.unique().sort(versionComparator)
 }
 
 def latestVersion = { List<String> versions ->
     if (versions.isEmpty()) return null
-    // Compare numerically by dot-separated parts
-    return versions.max { a, b ->
-        def pa = a.split(/[.\-]/).collect { it.isInteger() ? it as int : 0 }
-        def pb = b.split(/[.\-]/).collect { it.isInteger() ? it as int : 0 }
-        def len = Math.max(pa.size(), pb.size())
-        for (int i = 0; i < len; i++) {
-            def ai = i < pa.size() ? pa[i] : 0
-            def bi = i < pb.size() ? pb[i] : 0
-            if (ai != bi) return ai <=> bi
-        }
-        return 0
-    }
+    // Compare semantically
+    return versions.max(versionComparator)
 }
 
 // Task: Resolve version (interactive by default; supports -PbundleVersion and '*')
@@ -556,16 +564,7 @@ tasks.register('resolveVersion') {
     doLast {
         def supplied = versionProperty as String
         // Aggregate both bin/ and bin/archived/ and display with location tags
-        def all = findAvailableVersions().sort { a, b ->
-            def pa = a.split(/[.\-]/).collect { it.isInteger() ? it as int : 0 }
-            def pb = b.split(/[.\-]/).collect { it.isInteger() ? it as int : 0 }
-            for (int i=0; i<Math.max(pa.size(), pb.size()); i++) {
-                def ai = i < pa.size() ? pa[i] : 0
-                def bi = i < pb.size() ? pb[i] : 0
-                if (ai != bi) return ai <=> bi
-            }
-            return 0
-        }
+        def all = findAvailableVersions()
         def inBin = new File(projectDir, 'bin').exists() ? (new File(projectDir, 'bin').listFiles()
             ?.findAll { it.isDirectory() && it.name.startsWith(bundleName) && it.name != 'archived' }
             ?.collect { it.name.replace(bundleName, '') } ?: []) : []
@@ -1156,7 +1155,7 @@ tasks.register('listReleases') {
 
         println "\nAvailable Ruby Releases:"
         println "-".multiply(80)
-        releases.sort { it.key }.each { version, url ->
+        releases.sort { a, b -> versionComparator(a.key, b.key) }.each { version, url ->
             println "  ${version.padRight(10)} -> ${url}"
         }
         println "-".multiply(80)
@@ -1186,16 +1185,7 @@ tasks.register('listVersions') {
             ?.findAll { it.isDirectory() && it.name.startsWith(bundleName) }
             ?.collect { it.name.replace(bundleName, '') } ?: []) : []
 
-        def allVersions = (inBin + inArchived).toSet().toList().sort { a, b ->
-            def pa = a.split(/[.\-]/).collect { it.isInteger() ? it as int : 0 }
-            def pb = b.split(/[.\-]/).collect { it.isInteger() ? it as int : 0 }
-            for (int i = 0; i < Math.max(pa.size(), pb.size()); i++) {
-                def ai = i < pa.size() ? pa[i] : 0
-                def bi = i < pb.size() ? pb[i] : 0
-                if (ai != bi) return ai <=> bi
-            }
-            return 0
-        }
+        def allVersions = findAvailableVersions()
 
         println "\nAvailable ${bundleName} versions (index, version, location):"
         println "-".multiply(60)
